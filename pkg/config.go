@@ -6,7 +6,6 @@ import (
 	"net"
 	"os"
 	"os/exec"
-	"strconv"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -120,17 +119,7 @@ func (cm *ConfigManager) loadProductionConfig() *DatabaseConfig {
 		*mapping.fieldPtr = value
 	}
 
-	startSeederStr := os.Getenv("START_SEEDER")
-	if startSeederStr != "" {
-		if startSeeder, err := strconv.ParseBool(startSeederStr); err == nil {
-			config.StartSeeder = startSeeder
-		} else {
-			log.Printf("Invalid boolean value for START_SEEDER: %s, using default: false", startSeederStr)
-			config.StartSeeder = false
-		}
-	} else {
-		config.StartSeeder = false // default value for production (main)
-	}
+	config.StartSeeder = (strings.ToLower(strings.TrimSpace(os.Getenv("START_SEEDER"))) == "true")
 
 	if len(missingFields) > 0 {
 		log.Fatalf("Missing required environment variables: %v", missingFields)

@@ -38,8 +38,14 @@ type DatabaseCredentials struct {
 	SSLMode  string
 }
 
-func NewDatabaseManager(logService pkg.LogService, config pkg.DatabaseConfig) *DatabaseManager {
-	return &DatabaseManager{
+func NewDatabase(logService pkg.LogService, config pkg.DatabaseConfig) DatabaseManager {
+	dbManager := NewDatabaseManager(logService, config)
+	dbManager.Initialize()
+	return dbManager
+}
+
+func NewDatabaseManager(logService pkg.LogService, config pkg.DatabaseConfig) DatabaseManager {
+	return DatabaseManager{
 		logger: logService,
 		config: config,
 	}
@@ -261,11 +267,4 @@ func createGormLogger() logger.Interface {
 			Colorful:      true,
 		},
 	)
-}
-
-// For backward compatibility
-func NewDatabase(logService pkg.LogService, config pkg.DatabaseConfig) *DatabaseManager {
-	dbManager := NewDatabaseManager(logService, config)
-	dbManager.Initialize()
-	return dbManager
 }

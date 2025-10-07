@@ -13,6 +13,8 @@ import (
 
 var Module = fx.Options(
 	errors.Module,
+	infra.Module,
+	pkg.Module,
 	fx.Invoke(NewApp),
 )
 
@@ -25,9 +27,17 @@ type App struct {
 
 func NewApp(
 	lifecycle fx.Lifecycle,
-
+	log pkg.LogService,
+	configEnv pkg.DatabaseConfig,
+	database infra.DatabaseManager,
+	handler infra.Router,
 ) *App {
-	app := &App{}
+	app := &App{
+		log:       log,
+		configEnv: configEnv,
+		database:  database,
+		handler:   handler,
+	}
 
 	lifecycle.Append(fx.Hook{
 		OnStart: app.Start,

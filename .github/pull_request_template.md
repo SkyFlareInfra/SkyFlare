@@ -1,6 +1,10 @@
 ## Summary
 Briefly describe the purpose of this pull request.
 
+```
+...describe here
+```
+
 Fixes #<issue-number> (if applicable)
 
 ---

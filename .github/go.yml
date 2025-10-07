@@ -10,6 +10,7 @@ on:
     branches: [ "dev" ]
 
 jobs:
+
   go-ci:
     runs-on: ubuntu-latest
     steps:

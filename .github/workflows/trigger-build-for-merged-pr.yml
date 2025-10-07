@@ -34,6 +34,7 @@ jobs:
             echo "SKIP_GO=true" >> $GITHUB_ENV
           else
             echo "SKIP_GO=false" >> $GITHUB_ENV
+          fi
 
       - name: Remove vendor directory
         if: env.SKIP_GO == 'false'

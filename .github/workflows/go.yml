@@ -1,6 +1,3 @@
-# This workflow will build a golang project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
-
 name: Go
 
 on:
@@ -10,7 +7,6 @@ on:
     branches: [ "dev" ]
 
 jobs:
-
   go-ci:
     runs-on: ubuntu-latest
     steps:
@@ -21,8 +17,14 @@ jobs:
         with:
           go-version: '1.25.1'
 
+      - name: Remove vendor directory
+        run: rm -rf vendor
+
+      - name: Update dependencies
+        run: go mod tidy
+
       - name: Build
-        run: go build -v ./...
+        run: go build -mod=readonly -v ./...
 
       - name: Test
-        run: go test -v ./...
+        run: go test -mod=readonly -v ./...

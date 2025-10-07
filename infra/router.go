@@ -31,11 +31,11 @@ type RouterConfig struct {
 }
 
 type RouterBuilder struct {
-	config     pkg.DatabaseConfig
-	logger     pkg.LogService
-	router     *gin.Engine
-	routerCfg  RouterConfig
-	security   SecurityHeaders
+	config    pkg.DatabaseConfig
+	logger    pkg.LogService
+	router    *gin.Engine
+	routerCfg RouterConfig
+	security  SecurityHeaders
 }
 
 func NewRouter(configEnv pkg.DatabaseConfig, logger pkg.LogService) Router {
@@ -62,7 +62,7 @@ func NewRouter(configEnv pkg.DatabaseConfig, logger pkg.LogService) Router {
 
 func (rb *RouterBuilder) setupEnvironment() *RouterBuilder {
 	env := strings.ToLower(rb.config.Environment)
-	
+
 	rb.routerCfg = RouterConfig{
 		Environment: env,
 		Mode:        gin.ReleaseMode,
@@ -148,5 +148,7 @@ func (rb *RouterBuilder) acmeChallenge(c *gin.Context) {
 }
 
 func (rb *RouterBuilder) build() Router {
-	return Router{Engine: rb.router}
+	return Router{
+		Engine: rb.router,
+	}
 }

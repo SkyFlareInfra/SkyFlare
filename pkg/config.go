@@ -33,6 +33,10 @@ type ConfigManager struct {
 
 var configManager *ConfigManager
 
+func LoadConfig() DatabaseConfig {
+	return *NewConfigManager().LoadConfiguration()
+}
+
 func NewConfigManager() *ConfigManager {
 	if configManager == nil {
 		configManager = &ConfigManager{}
@@ -174,11 +178,6 @@ func (cm *ConfigManager) verifyPortAvailable(port int) {
 func (c *DatabaseConfig) CheckAndKillProcess(port int) {
 	configMgr := NewConfigManager()
 	configMgr.ValidateAndFreePort(port)
-}
-
-// Convenience functions for backward compatibility
-func LoadConfig() DatabaseConfig {
-	return *NewConfigManager().LoadConfiguration()
 }
 
 func GetConf() *DatabaseConfig {

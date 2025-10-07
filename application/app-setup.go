@@ -2,6 +2,7 @@ package application
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 
 	"github.com/SkyFlareInfra/SkyFlare/errors"
@@ -79,17 +80,17 @@ func (a *App) validateConfig() error {
 
 func (a *App) printStartupBanner() {
 	banner := `
-			┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-			┃              Starting Application                ┃
-			┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-		    ┃                                                  ┃
-			┃              S K Y F L A R E                     ┃
-			┃           CloudService Controller                ┃
-			┃                   v1.0                           ┃
-			┃                                                  ┃
-			┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+				╔══════════════════════════════════════════════════╗
+				║                  Starting Application            ║
+				╠══════════════════════════════════════════════════╣
+				║                                                  ║
+				║                    S K Y F L A R E               ║
+				║             CloudService Controller              ║
+				║                     v1.0                         ║
+				║                                                  ║
+				╚══════════════════════════════════════════════════╝
 			`
-	a.log.LogInfo(banner)
+	fmt.Print(banner)
 }
 
 func (a *App) setupDatabase() error {

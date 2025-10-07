@@ -19,7 +19,6 @@ jobs:
       - name: Checkout specific commit
         run: |
           COMMIT=${{ github.event.inputs.commit_sha }}
-          echo "Checking out commit $COMMIT..."
           git fetch origin $COMMIT
           git checkout $COMMIT
 
@@ -28,18 +27,33 @@ jobs:
         with:
           go-version: '1.25.1'
 
+      - name: Check for go.mod
+        id: check-gomod
+        run: |
+          if [ ! -f go.mod ]; then
+            echo "SKIP_GO=true" >> $GITHUB_ENV
+          else
+            echo "SKIP_GO=false" >> $GITHUB_ENV
+
       - name: Remove vendor directory
+        if: env.SKIP_GO == 'false'
         run: rm -rf vendor
 
       - name: Update dependencies
+        if: env.SKIP_GO == 'false'
         run: go mod tidy
 
       - name: Build
+        if: env.SKIP_GO == 'false'
         run: go build -mod=readonly -v ./...
 
       - name: Test
+        if: env.SKIP_GO == 'false'
         run: go test -mod=readonly -v ./...
 
       - name: Show current commit
         run: |
           echo "Workflow ran on commit: $(git rev-parse HEAD)"
+          if [ "$SKIP_GO" = "true" ]; then
+            echo "Go build/test steps were skipped because go.mod was missing."
+          fi

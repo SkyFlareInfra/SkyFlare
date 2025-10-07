@@ -1,0 +1,15 @@
+# Cloudflare IP ranges (IPv6)
+# Source: https://www.cloudflare.com/ips
+# Last updated: Sep 28, 2023
+# License: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication
+
+2400:cb00::/32
+2606:4700::/32
+2803:f800::/32
+2405:b500::/32
+2405:8100::/32
+2a06:98c0::/29
+2c0f:f248::/32
+
+
+https://www.cloudflare.com/ips-v6

@@ -329,7 +329,7 @@ golang.org/x/sys/cpu
 golang.org/x/sys/execabs
 golang.org/x/sys/unix
 golang.org/x/sys/windows
-# golang.org/x/text v0.29.0
+# golang.org/x/text v0.29.1-0.20250923185020-42f038dad6d2
 ## explicit; go 1.24.0
 golang.org/x/text/cases
 golang.org/x/text/encoding

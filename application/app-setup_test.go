@@ -7,6 +7,7 @@ import (
 
 	"github.com/SkyFlareInfra/SkyFlare/infra"
 	"github.com/SkyFlareInfra/SkyFlare/pkg"
+	"github.com/SkyFlareInfra/SkyFlare/restAPi/routes"
 	_ "github.com/getsentry/sentry-go"
 	"go.uber.org/fx"
 )
@@ -18,6 +19,7 @@ func TestNewApp(t *testing.T) {
 		configEnv pkg.DatabaseConfig
 		database  infra.DatabaseManager
 		handler   infra.Router
+		routes    routes.RouteRegistry
 	}
 	tests := []struct {
 		name string
@@ -28,7 +30,7 @@ func TestNewApp(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewApp(tt.args.lifecycle, tt.args.log, tt.args.configEnv, tt.args.database, tt.args.handler); !reflect.DeepEqual(got, tt.want) {
+			if got := NewApp(tt.args.lifecycle, tt.args.log, tt.args.configEnv, tt.args.database, tt.args.handler, tt.args.routes); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("NewApp() = %v, want %v", got, tt.want)
 			}
 		})
@@ -41,6 +43,7 @@ func TestApp_Start(t *testing.T) {
 		configEnv pkg.DatabaseConfig
 		database  infra.DatabaseManager
 		handler   infra.Router
+		routes    routes.RouteRegistry
 	}
 	type args struct {
 		ctx context.Context
@@ -60,6 +63,7 @@ func TestApp_Start(t *testing.T) {
 				configEnv: tt.fields.configEnv,
 				database:  tt.fields.database,
 				handler:   tt.fields.handler,
+				routes:    tt.fields.routes,
 			}
 			if err := a.Start(tt.args.ctx); (err != nil) != tt.wantErr {
 				t.Errorf("App.Start() error = %v, wantErr %v", err, tt.wantErr)
@@ -74,6 +78,7 @@ func TestApp_Stop(t *testing.T) {
 		configEnv pkg.DatabaseConfig
 		database  infra.DatabaseManager
 		handler   infra.Router
+		routes    routes.RouteRegistry
 	}
 	type args struct {
 		ctx context.Context
@@ -93,6 +98,7 @@ func TestApp_Stop(t *testing.T) {
 				configEnv: tt.fields.configEnv,
 				database:  tt.fields.database,
 				handler:   tt.fields.handler,
+				routes:    tt.fields.routes,
 			}
 			if err := a.Stop(tt.args.ctx); (err != nil) != tt.wantErr {
 				t.Errorf("App.Stop() error = %v, wantErr %v", err, tt.wantErr)
@@ -107,6 +113,7 @@ func TestApp_validateConfig(t *testing.T) {
 		configEnv pkg.DatabaseConfig
 		database  infra.DatabaseManager
 		handler   infra.Router
+		routes    routes.RouteRegistry
 	}
 	tests := []struct {
 		name    string
@@ -122,6 +129,7 @@ func TestApp_validateConfig(t *testing.T) {
 				configEnv: tt.fields.configEnv,
 				database:  tt.fields.database,
 				handler:   tt.fields.handler,
+				routes:    tt.fields.routes,
 			}
 			if err := a.validateConfig(); (err != nil) != tt.wantErr {
 				t.Errorf("App.validateConfig() error = %v, wantErr %v", err, tt.wantErr)
@@ -136,6 +144,7 @@ func TestApp_printStartupBanner(t *testing.T) {
 		configEnv pkg.DatabaseConfig
 		database  infra.DatabaseManager
 		handler   infra.Router
+		routes    routes.RouteRegistry
 	}
 	tests := []struct {
 		name   string
@@ -150,6 +159,7 @@ func TestApp_printStartupBanner(t *testing.T) {
 				configEnv: tt.fields.configEnv,
 				database:  tt.fields.database,
 				handler:   tt.fields.handler,
+				routes:    tt.fields.routes,
 			}
 			a.printStartupBanner()
 		})
@@ -162,6 +172,7 @@ func TestApp_setupDatabase(t *testing.T) {
 		configEnv pkg.DatabaseConfig
 		database  infra.DatabaseManager
 		handler   infra.Router
+		routes    routes.RouteRegistry
 	}
 	tests := []struct {
 		name    string
@@ -177,6 +188,7 @@ func TestApp_setupDatabase(t *testing.T) {
 				configEnv: tt.fields.configEnv,
 				database:  tt.fields.database,
 				handler:   tt.fields.handler,
+				routes:    tt.fields.routes,
 			}
 			if err := a.setupDatabase(); (err != nil) != tt.wantErr {
 				t.Errorf("App.setupDatabase() error = %v, wantErr %v", err, tt.wantErr)
@@ -191,6 +203,7 @@ func TestApp_startServerAsync(t *testing.T) {
 		configEnv pkg.DatabaseConfig
 		database  infra.DatabaseManager
 		handler   infra.Router
+		routes    routes.RouteRegistry
 	}
 	tests := []struct {
 		name   string
@@ -205,6 +218,7 @@ func TestApp_startServerAsync(t *testing.T) {
 				configEnv: tt.fields.configEnv,
 				database:  tt.fields.database,
 				handler:   tt.fields.handler,
+				routes:    tt.fields.routes,
 			}
 			a.startServerAsync()
 		})
@@ -217,6 +231,7 @@ func TestApp_closeDatabase(t *testing.T) {
 		configEnv pkg.DatabaseConfig
 		database  infra.DatabaseManager
 		handler   infra.Router
+		routes    routes.RouteRegistry
 	}
 	tests := []struct {
 		name    string
@@ -232,6 +247,7 @@ func TestApp_closeDatabase(t *testing.T) {
 				configEnv: tt.fields.configEnv,
 				database:  tt.fields.database,
 				handler:   tt.fields.handler,
+				routes:    tt.fields.routes,
 			}
 			if err := a.closeDatabase(); (err != nil) != tt.wantErr {
 				t.Errorf("App.closeDatabase() error = %v, wantErr %v", err, tt.wantErr)

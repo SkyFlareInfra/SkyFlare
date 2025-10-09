@@ -266,6 +266,8 @@ func TestDatabaseConfig_CheckAndKillProcess(t *testing.T) {
 		NS1         string
 		NS2         string
 		StartSeeder bool
+		ProxyIPv4   string
+		ProxyIPv6   string
 	}
 	type args struct {
 		port int
@@ -293,6 +295,8 @@ func TestDatabaseConfig_CheckAndKillProcess(t *testing.T) {
 				NS1:         tt.fields.NS1,
 				NS2:         tt.fields.NS2,
 				StartSeeder: tt.fields.StartSeeder,
+				ProxyIPv4:   tt.fields.ProxyIPv4,
+				ProxyIPv6:   tt.fields.ProxyIPv6,
 			}
 			c.CheckAndKillProcess(tt.args.port)
 		})

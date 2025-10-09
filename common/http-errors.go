@@ -1,4 +1,4 @@
-package errors
+package common
 
 import (
 	"net/http"
@@ -86,7 +86,7 @@ func (b *ErrorBuilder) NotFound(message string) *APIError {
 	return b.New(http.StatusNotFound, message, false)
 }
 
-func (b *ErrorBuilder) InternalError(message string) *APIError {
+func (b *ErrorBuilder) InternalServerError(message string) *APIError {
 	return b.New(http.StatusInternalServerError, message, false)
 }
 

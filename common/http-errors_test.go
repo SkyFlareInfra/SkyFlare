@@ -1,4 +1,4 @@
-package errors
+package common
 
 import (
 	"reflect"
@@ -206,7 +206,7 @@ func TestErrorBuilder_NotFound(t *testing.T) {
 	}
 }
 
-func TestErrorBuilder_InternalError(t *testing.T) {
+func TestErrorBuilder_InternalServerError(t *testing.T) {
 	type args struct {
 		message string
 	}
@@ -221,8 +221,8 @@ func TestErrorBuilder_InternalError(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			b := &ErrorBuilder{}
-			if got := b.InternalError(tt.args.message); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("ErrorBuilder.InternalError() = %v, want %v", got, tt.want)
+			if got := b.InternalServerError(tt.args.message); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("ErrorBuilder.InternalServerError() = %v, want %v", got, tt.want)
 			}
 		})
 	}

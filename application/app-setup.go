@@ -5,17 +5,31 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/SkyFlareInfra/SkyFlare/errors"
+	"github.com/SkyFlareInfra/SkyFlare/common"
 	"github.com/SkyFlareInfra/SkyFlare/infra"
 	"github.com/SkyFlareInfra/SkyFlare/pkg"
+	"github.com/SkyFlareInfra/SkyFlare/repository"
+	"github.com/SkyFlareInfra/SkyFlare/restAPi/client"
+	"github.com/SkyFlareInfra/SkyFlare/restAPi/controllers"
+	"github.com/SkyFlareInfra/SkyFlare/restAPi/routes"
+	"github.com/SkyFlareInfra/SkyFlare/restAPi/services"
+	"github.com/SkyFlareInfra/SkyFlare/restAPi/utility"
+	"github.com/SkyFlareInfra/SkyFlare/service"
 	_ "github.com/getsentry/sentry-go"
 	"go.uber.org/fx"
 )
 
 var Module = fx.Options(
-	errors.Module,
+	common.Module,
 	infra.Module,
 	pkg.Module,
+	routes.Module,
+	controllers.Module,
+	services.Module,
+	service.Module,
+	client.Module,
+	utility.Module,
+	repository.Module,
 	fx.Invoke(NewApp),
 )
 
@@ -24,6 +38,7 @@ type App struct {
 	configEnv pkg.DatabaseConfig
 	database  infra.DatabaseManager
 	handler   infra.Router
+	routes    routes.RouteRegistry
 }
 
 func NewApp(
@@ -32,12 +47,14 @@ func NewApp(
 	configEnv pkg.DatabaseConfig,
 	database infra.DatabaseManager,
 	handler infra.Router,
+	routes routes.RouteRegistry,
 ) *App {
 	app := &App{
 		log:       log,
 		configEnv: configEnv,
 		database:  database,
 		handler:   handler,
+		routes:    routes,
 	}
 
 	lifecycle.Append(fx.Hook{
@@ -104,7 +121,7 @@ func (a *App) setupDatabase() error {
 }
 
 func (a *App) startServerAsync() {
-	// a.routes.Setup() // commented out for now
+	a.routes.SetupRoutes()
 	go func() {
 		addr := ":" + a.configEnv.ServerPort
 		if err := a.handler.Run(addr); err != nil {

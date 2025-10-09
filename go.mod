@@ -8,6 +8,9 @@ require (
 	github.com/gin-contrib/cors v1.7.6
 	github.com/gin-gonic/gin v1.11.0
 	github.com/go-acme/lego/v4 v4.26.0
+	github.com/google/uuid v1.6.0
+	github.com/jellydator/ttlcache/v3 v3.4.0
+	github.com/miekg/dns v1.1.68
 	github.com/spf13/viper v1.21.0
 	go.uber.org/fx v1.24.0
 	go.uber.org/zap v1.27.0

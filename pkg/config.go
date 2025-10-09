@@ -25,6 +25,8 @@ type DatabaseConfig struct {
 	NS1         string `mapstructure:"NS_1"`
 	NS2         string `mapstructure:"NS_2"`
 	StartSeeder bool   `mapstructure:"START_SEEDER"`
+	ProxyIPv4   string `mapstructure:"PROXY_IP_V4"`
+	ProxyIPv6   string `mapstructure:"PROXY_IP_V6"`
 }
 
 type ConfigManager struct {
